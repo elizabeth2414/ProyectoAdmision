@@ -1,0 +1,152 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+  color: #333;
+}
+
+/* Sidebar */
+.side-navbar {
+  width: 250px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #0a1f44;
+  margin-left: -300px;
+  transition: margin-left 0.4s ease;
+  z-index: 999;
+  padding-top: 20px;
+}
+
+.side-navbar.active-nav {
+  margin-left: 0;
+}
+
+.side-navbar .nav-link {
+  color: white;
+  padding: 12px 20px;
+  display: block;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+  font-size: 16px;
+}
+
+.side-navbar .nav-link:hover,
+.side-navbar .nav-link:focus {
+  background-color: rgba(255, 255, 255, 0.15);
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+/* Contenedor principal */
+.my-container {
+  transition: margin-left 0.4s ease;
+  padding: 20px;
+  margin-left: 0;
+}
+
+.my-container.active-cont {
+  margin-left: 250px;
+}
+
+/* Botón del menú */
+#menu-btn {
+  background-color: #0a1f44;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 18px;
+}
+
+/* Formularios */
+.my-container input[type="text"],
+.my-container input[type="email"],
+.my-container input[type="password"] {
+  border-radius: 12px;
+  padding: 10px 16px;
+  width: 100%;
+  border: 1px solid #ccc;
+  margin-bottom: 16px;
+  font-size: 15px;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.my-container input:focus {
+  outline: none;
+  border-color: #0a1f44;
+}
+
+/* Botones */
+.btn {
+  border-radius: 8px !important;
+  padding: 10px 18px;
+  font-size: 15px;
+}
+
+.btn-success {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+/* Alertas */
+.alert {
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 14px;
+}
+
+/* Error */
+.text-danger,
+.error-message {
+  color: red;
+  font-size: 0.9em;
+  margin-top: -8px;
+  margin-bottom: 8px;
+}
+
+/* Tarjeta */
+.card {
+  border-radius: 16px;
+  border: none;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .active-cont {
+    margin-left: 0;
+  }
+
+  .side-navbar {
+    margin-left: -300px;
+  }
+
+  .side-navbar.active-nav {
+    margin-left: 0;
+  }
+
+  .my-container {
+    padding: 10px;
+  }
+
+  #menu-btn {
+    font-size: 20px;
+    padding: 6px 10px;
+  }
+}

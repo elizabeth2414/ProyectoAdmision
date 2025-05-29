@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" th:href="@{/css/styleM.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Sistema Educativo</title>
+</head>
+
+<body>
+    <section class="hero-section">
+        <nav class="navbar">
+            <div class="data-container">
+                <img src="/imagenes/LOGO.png" class="Logo" />
+                <div id="menu-time" class="menu-data animate__animated ">
+                    <a onclick="closebar()"><i id="close" class="size fa-solid fa-xmark"></i></a>
+                    
+                </div>
+                <a id="Menu-bar" onclick="menubar()"><i class="size-icon fa-solid fa-bars"></i></a>
+            </div>
+        </nav>
+        <div class="hero-section-content">
+            <div class="login-container">
+                <h2>Iniciar Sesión por Cédula</h2>
+
+                <form id="loginForm" class="login-form" onsubmit="login(event)">
+                    <div class="input-group">
+                        <i class="fas fa-id-card icon"></i>
+                        <input type="text" id="cedula" name="cedula" placeholder="Ingrese su cédula" required minlength="10" maxlength="10" />
+                    </div>
+
+                    <button type="submit">Iniciar Sesión</button>
+
+                    <div id="mensaje" style="margin-top: 10px; color: red;"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://kit.fontawesome.com/7103fc097b.js" crossorigin="anonymous"></script>
+
+    <script>
+        function menubar() {
+            var hihu = document.querySelector('.menu-data');
+            var element = document.getElementById('Menu-bar');
+
+            if (hihu) {
+                hihu.classList.remove('animate__fadeOut');
+                element.style.display = 'none';
+                hihu.style.zIndex = '1';
+                hihu.classList.add('animate__fadeIn');
+            }
+        }
+
+        function closebar() {
+            var hihu = document.querySelector('.menu-data');
+            var element = document.getElementById('Menu-bar');
+            if (hihu) {
+                hihu.classList.remove('animate__fadeIn');
+                hihu.style.zIndex = '-20';
+                element.style.display = 'block';
+                hihu.classList.add('animate__fadeOut');
+            }
+        }
+
+        async function login(event) {
+            event.preventDefault();
+
+            const cedula = document.getElementById('cedula').value.trim();
+            const mensajeDiv = document.getElementById('mensaje');
+            mensajeDiv.style.color = 'red';
+            mensajeDiv.textContent = '';
+
+            if (cedula.length !== 10) {
+                mensajeDiv.textContent = 'Por favor, ingrese una cédula válida de 10 dígitos.';
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/login/cedula/${cedula}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.status} - Usuario no encontrado.`);
+                }
+
+                const usuario = await response.json();
+
+                mensajeDiv.style.color = 'green';
+                mensajeDiv.textContent = `¡Bienvenido, ${usuario.primernombre} ${usuario.primerapellido}!`;
+
+                // Aquí puedes redirigir o hacer lo que necesites, por ejemplo:
+                // window.location.href = "/menu2";
+				window.location.href = "/menu/layout";
+            } catch (error) {
+                mensajeDiv.textContent = error.message;
+            }
+        }
+    </script>
+</body>
+
+</html>
