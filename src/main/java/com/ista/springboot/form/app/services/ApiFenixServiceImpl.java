@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import com.ista.springboot.form.app.dao.IRolDao;
@@ -81,5 +82,33 @@ public class ApiFenixServiceImpl implements IApiFenixService {
 		} else {
 			throw new RuntimeException("Usuario no encontrado en API externa");
 		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Usuarios> findAll() {
+		// TODO Auto-generated method stub
+		return (List<Usuarios>)usuarioDao.findAll();
+	}
+
+	@Override
+	@Transactional
+	public Usuarios save(Usuarios usuarios) {
+		// TODO Auto-generated method stub
+		return usuarioDao.save(usuarios);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Usuarios findById(Long id) {
+		// TODO Auto-generated method stub
+		return usuarioDao.findById(id).orElse(null);
+	}
+
+	@Override
+	@Transactional
+	public void delete(Long id) {
+		// TODO Auto-generated method stub
+		usuarioDao.deleteById(id);
 	}
 }

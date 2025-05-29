@@ -12,11 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.ista.springboot.form.app.entity.Institucion;
-import com.ista.springboot.form.app.entity.Rol;
 import com.ista.springboot.form.app.entity.Estudiantes;
 import com.ista.springboot.form.app.services.IInstitucionService;
-import com.ista.springboot.form.app.services.IRolService;
 import com.ista.springboot.form.app.services.IEstudianteService;
 
 import jakarta.validation.Valid;
@@ -25,98 +22,81 @@ import jakarta.validation.Valid;
 public class EstudianteControllers {
 
 	@Autowired
-    private IEstudianteService usuarioService;
+    private IEstudianteService estudianteService;
 
     @Autowired
     private IInstitucionService institucionService;
 
-    @Autowired
-    private IRolService rolService;
-    
-    @GetMapping("/listartodos")
+    @GetMapping("/listartodos1")
     public String listarTodos(Model model) {
-        List<Estudiantes> usuarios = usuarioService.findAll();
-        model.addAttribute("usuarios", usuarios);
-        return "listartodos";
+        List<Estudiantes> estudiantes = estudianteService.findAll();
+        model.addAttribute("estudiantes", estudiantes);
+        return "listartodos1";
     }
 
-    @GetMapping("/listarUsuarios")
+    @GetMapping("/listarEstudiantes")
     public String listarUsuarios(Model model) {
-        List<Estudiantes> usuarios = usuarioService.findAll();
-        model.addAttribute("titulo", "Lista de Usuarios");
-        model.addAttribute("usuarios", usuarios);
-        return "listarUsuarios";
+        List<Estudiantes> estudiantes = estudianteService.findAll();
+        model.addAttribute("titulo", "Lista de Estudiantes");
+        model.addAttribute("usuarios", estudiantes);
+        return "listarEstudiantes";
     }
 
     @GetMapping("/registrarEstudiantes")
     public String crearUsuario(Model model) {
         model.addAttribute("usuario", new Estudiantes());
-
-        List<Institucion> instituciones = institucionService.findAll();
-        model.addAttribute("instituciones", instituciones);
-
-        List<Rol> roles = rolService.findAll(); 
-        model.addAttribute("roles", roles);
-
+        model.addAttribute("instituciones", institucionService.findAll());
         model.addAttribute("titulo", "Registrar Usuario");
         return "registrarEstudiantes";
     }
 
-    @PostMapping("/guardarUsuario")
+    @PostMapping("/guardarEstudiante")
     public String guardarUsuario(
-            @Valid @ModelAttribute("usuario") Estudiantes usuario,
+            @Valid @ModelAttribute("estudiante") Estudiantes estudiante,
             BindingResult result,
             Model model,
             RedirectAttributes flash) {
 
         if (result.hasErrors()) {
             model.addAttribute("titulo", "Registrar Usuario");
-
-           
             model.addAttribute("instituciones", institucionService.findAll());
-            model.addAttribute("roles", rolService.findAll());
-
             return "registrarEstudiantes";
         }
 
         try {
-            usuarioService.save(usuario);
-            flash.addFlashAttribute("success", "Usuario guardado correctamente");
-            return "redirect:/listarUsuarios";
+        	estudianteService.save(estudiante);
+            flash.addFlashAttribute("success", "Estudiante guardado correctamente");
+            return "redirect:/listarEstudiantes";
         } catch (Exception e) {
-            model.addAttribute("error", "Error al guardar el usuario: " + e.getMessage());
-            model.addAttribute("titulo", "Registrar Usuario");
-
+            model.addAttribute("error", "Error al guardar el estudiante: " + e.getMessage());
+            model.addAttribute("titulo", "Registrar Estudiante");
             model.addAttribute("instituciones", institucionService.findAll());
-            model.addAttribute("roles", rolService.findAll());
-
             return "registrarEstudiantes";
         }
     }
 
-    @GetMapping("/editarUsuario/{id}")
+    @GetMapping("/editarEstudiante/{id}")
     public String editarUsuario(@PathVariable Long id, Model model, RedirectAttributes flash) {
-        Estudiantes usuario = usuarioService.findById(id);
-        if (usuario == null) {
-            flash.addFlashAttribute("error", "Usuario no encontrado");
-            return "redirect:/listarUsuarios";
+        Estudiantes estudiante = estudianteService.findById(id);
+        if (estudiante == null) {
+            flash.addFlashAttribute("error", "Estudiante no encontrado");
+            return "redirect:/listarEstudiantes";
         }
 
-        model.addAttribute("usuario", usuario);
-        model.addAttribute("titulo", "Editar Usuario");
+        model.addAttribute("estudiante", estudiante);
+        model.addAttribute("titulo", "Editar Estudiante");
         model.addAttribute("instituciones", institucionService.findAll());
-        model.addAttribute("roles", rolService.findAll());
         return "registrarEstudiantes";
     }
 
-    @GetMapping("/eliminarUsuario/{id}")
+    @GetMapping("/eliminarEstudiante/{id}")
     public String eliminarUsuario(@PathVariable Long id, RedirectAttributes flash) {
         try {
-            usuarioService.delete(id);
-            flash.addFlashAttribute("success", "Usuario eliminado correctamente");
+        	estudianteService.delete(id);
+            flash.addFlashAttribute("success", "Estudiante eliminado correctamente");
         } catch (Exception e) {
-            flash.addFlashAttribute("error", "Error al eliminar el usuario: " + e.getMessage());
+            flash.addFlashAttribute("error", "Error al eliminar el estudiante: " + e.getMessage());
         }
-        return "redirect:/listarUsuarios";
+        return "redirect:/listarEstudiantes";
     }
 }

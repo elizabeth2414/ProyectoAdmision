@@ -13,4 +13,12 @@ public interface IApiFenixService {
 	Usuarios buscarPorId(Long id);
 
 	Usuarios obtenerORegistrarUsuarioPorCedula(String cedula);
+	
+	List<Usuarios> findAll();
+
+	Usuarios save(Usuarios usuarios);
+
+	Usuarios findById(Long id);
+
+	void delete(Long id);
 }

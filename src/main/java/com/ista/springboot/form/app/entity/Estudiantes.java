@@ -19,9 +19,9 @@ public class Estudiantes implements Serializable{
 	private Long id_usuario;
 	
 	private String cedula;
-	private String nombres;
-	private String apellidos;
-	private String correo_electronico;
+	private String nombre;
+	private String apellido;
+	private String correo;
 	private String celular;
 	private boolean matriculado;
 	private boolean apoyaproceso;
@@ -33,20 +33,22 @@ public class Estudiantes implements Serializable{
 	
 	public Estudiantes() {}
 
-	public Estudiantes(Long id_usuario, String cedula, String nombres, String apellidos, String correo_electronico,
-			String celular, boolean matriculado, boolean apoyaproceso, String observacion, Institucion institucion) {
+
+	public Estudiantes(Long id_usuario, String cedula, String nombre, String apellido, String correo, String celular,
+			boolean matriculado, boolean apoyaproceso, String observacion, Institucion institucion) {
 		super();
 		this.id_usuario = id_usuario;
 		this.cedula = cedula;
-		this.nombres = nombres;
-		this.apellidos = apellidos;
-		this.correo_electronico = correo_electronico;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.correo = correo;
 		this.celular = celular;
 		this.matriculado = matriculado;
 		this.apoyaproceso = apoyaproceso;
 		this.observacion = observacion;
 		this.institucion = institucion;
 	}
+
 
 
 
@@ -54,81 +56,139 @@ public class Estudiantes implements Serializable{
 		return id_usuario;
 	}
 
+
+
+
 	public void setId_usuario(Long id_usuario) {
 		this.id_usuario = id_usuario;
 	}
+
+
+
 
 	public String getCedula() {
 		return cedula;
 	}
 
+
+
+
 	public void setCedula(String cedula) {
 		this.cedula = cedula;
 	}
 
-	public String getNombres() {
-		return nombres;
+
+
+
+	public String getNombre() {
+		return nombre;
 	}
 
-	public void setNombres(String nombres) {
-		this.nombres = nombres;
+
+
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
 	}
 
-	public String getApellidos() {
-		return apellidos;
+
+
+
+	public String getApellido() {
+		return apellido;
 	}
 
-	public void setApellidos(String apellidos) {
-		this.apellidos = apellidos;
+
+
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
 	}
 
-	public String getCorreo_electronico() {
-		return correo_electronico;
+
+
+
+	public String getCorreo() {
+		return correo;
 	}
 
-	public void setCorreo_electronico(String correo_electronico) {
-		this.correo_electronico = correo_electronico;
+
+
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
 	}
+
+
+
 
 	public String getCelular() {
 		return celular;
 	}
 
+
+
+
 	public void setCelular(String celular) {
 		this.celular = celular;
 	}
+
+
+
 
 	public boolean isMatriculado() {
 		return matriculado;
 	}
 
+
+
+
 	public void setMatriculado(boolean matriculado) {
 		this.matriculado = matriculado;
 	}
+
+
+
 
 	public boolean isApoyaproceso() {
 		return apoyaproceso;
 	}
 
+
+
+
 	public void setApoyaproceso(boolean apoyaproceso) {
 		this.apoyaproceso = apoyaproceso;
 	}
+
+
+
 
 	public String getObservacion() {
 		return observacion;
 	}
 
+
+
+
 	public void setObservacion(String observacion) {
 		this.observacion = observacion;
 	}
+
+
+
 
 	public Institucion getInstitucion() {
 		return institucion;
 	}
 
+
+
+
 	public void setInstitucion(Institucion institucion) {
 		this.institucion = institucion;
 	}
+
 
 
 
