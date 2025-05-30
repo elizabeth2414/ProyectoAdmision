@@ -94,11 +94,10 @@
                 const usuario = await response.json();
 
                 mensajeDiv.style.color = 'green';
-                mensajeDiv.textContent = `¡Bienvenido, ${usuario.primernombre} ${usuario.primerapellido}!`;
+                mensajeDiv.textContent = `¡Bienvenido, ${usuario.primer_nombre} ${usuario.segundo_nombre}!`;
 
-                // Aquí puedes redirigir o hacer lo que necesites, por ejemplo:
-                // window.location.href = "/menu2";
-				window.location.href = "/menu/layout";
+
+				window.location.href = "/menu/layout2";
             } catch (error) {
                 mensajeDiv.textContent = error.message;
             }
