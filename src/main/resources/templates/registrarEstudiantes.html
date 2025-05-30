@@ -25,84 +25,73 @@
 <div class="container mt-5">
     <h2 class="mb-4" th:text="${titulo}">Registrar Usuario</h2>
 
-    <form th:action="@{/guardarUsuario}" th:object="${usuario}" method="post">
-        <input type="hidden" th:field="*{id_usuario}" />
+	<form th:action="@{/guardarEstudiante}" th:object="${estudiante}" method="post">
+	    <input type="hidden" th:field="*{id_usuario}" />
 
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label for="cedula">Cédula</label>
-                <input type="text" class="form-control" th:field="*{cedula}" required />
-            </div>
+	    <div class="row">
+	        <div class="col-md-6 mb-3">
+	            <label for="cedula">Cédula</label>
+	            <input type="text" class="form-control" th:field="*{cedula}" required />
+	        </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="primernombre">Primer Nombre</label>
-                <input type="text" class="form-control" th:field="*{primernombre}" required />
-            </div>
+	        <div class="col-md-6 mb-3">
+	            <label for="nombre">Nombre</label>
+	            <input type="text" class="form-control" th:field="*{nombre}" required />
+	        </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="segundonombre">Segundo Nombre</label>
-                <input type="text" class="form-control" th:field="*{segundonombre}" />
-            </div>
+	        <div class="col-md-6 mb-3">
+	            <label for="apellido">Apellido</label>
+	            <input type="text" class="form-control" th:field="*{apellido}" required />
+	        </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="primerapellido">Primer Apellido</label>
-                <input type="text" class="form-control" th:field="*{primerapellido}" required />
-            </div>
+	        <div class="col-md-6 mb-3">
+	            <label for="correo">Correo Electrónico</label>
+	            <input type="email" class="form-control" th:field="*{correo}" required />
+	        </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="segundoapellido">Segundo Apellido</label>
-                <input type="text" class="form-control" th:field="*{segundoapellido}" />
-            </div>
+	        <div class="col-md-6 mb-3">
+	            <label for="celular">Celular</label>
+	            <input type="text" class="form-control" th:field="*{celular}" />
+	        </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="correo_electronico">Correo Electrónico</label>
-                <input type="email" class="form-control" th:field="*{correo_electronico}" required />
-            </div>
+	        <div class="col-md-6 mb-3">
+	            <label for="matriculado">¿Matriculado?</label>
+	            <select class="form-control" th:field="*{matriculado}">
+	                <option value="true">Sí</option>
+	                <option value="false">No</option>
+	            </select>
+	        </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="celular">Celular</label>
-                <input type="text" class="form-control" th:field="*{celular}" />
-            </div>
+	        <div class="col-md-6 mb-3">
+	            <label for="apoyaproceso">¿Apoyo el  Proceso?</label>
+	            <select class="form-control" th:field="*{apoyaproceso}">
+	                <option value="true">Sí</option>
+	                <option value="false">No</option>
+	            </select>
+	        </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="matriculado">¿Matriculado?</label>
-                <select class="form-control" th:field="*{matriculado}">
-                    <option value="true">Sí</option>
-                    <option value="false">No</option>
-                </select>
-            </div>
+	        <div class="col-md-12 mb-3">
+	            <label for="observacion">Observación</label>
+	            <textarea class="form-control" rows="3" th:field="*{observacion}"></textarea>
+	        </div>
 
-            <div class="col-md-6 mb-3">
-                <label for="apoyaproceso">¿Apoya Proceso?</label>
-                <select class="form-control" th:field="*{apoyaproceso}">
-                    <option value="true">Sí</option>
-                    <option value="false">No</option>
-                </select>
-            </div>
+	        <div class="col-md-6 mb-3">
+	            <label for="institucion">Institución</label>
+	            <select class="form-control" th:field="*{institucion}" required>
+	                <option value="" disabled selected>Seleccione una institución</option>
+	                <option th:each="inst : ${instituciones}"
+	                        th:value="${inst}"
+	                        th:text="${inst.nombre_institucion}">
+	                </option>
+	            </select>
+	        </div>
+	    </div>
 
-            <div class="col-md-12 mb-3">
-                <label for="observacion">Observación</label>
-                <textarea class="form-control" rows="3" th:field="*{observacion}"></textarea>
-            </div>
-
-			<div class="col-md-6 mb-3">
-			    <label for="institucion">Institución</label>
-			    <select class="form-control select2" th:field="*{institucion}" required>
-			        <option value="" disabled selected>Seleccione una institución</option>
-					<option th:each="inst : ${instituciones}"
-					        th:value="${inst.id_institucion}"
-					        th:text="${inst.nombre_institucion}"
-					        th:selected="${usuario.institucion != null and inst.id_institucion == usuario.institucion.id_institucion}">
-					</option>
-			    </select>
-			</div>
-
-
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-            <a th:href="@{/listarUsuarios}" class="btn btn-secondary">Cancelar</a>
-        </div>
-    </form>
+	    <div class="mt-4">
+	        <button type="submit" class="btn btn-primary">Guardar</button>
+	        <a th:href="@{/listarEstudiantes}" class="btn btn-secondary">Cancelar</a>
+	    </div>
+	</form>
 </div>
 
  </div>

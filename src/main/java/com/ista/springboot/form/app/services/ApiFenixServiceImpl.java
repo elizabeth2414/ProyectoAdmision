@@ -48,40 +48,40 @@ public class ApiFenixServiceImpl implements IApiFenixService {
 	public Usuarios obtenerORegistrarUsuarioPorCedula(String cedula) {
 		// TODO Auto-generated method stub
 		// 1. Buscar localmente
-		Optional<Usuarios> usuarioOpt = usuarioDao.findByCedula(cedula);
-		if (usuarioOpt.isPresent()) {
-			return usuarioOpt.get();
-		}
+	    Optional<Usuarios> usuarioOpt = usuarioDao.findByCedula(cedula);
+	    if (usuarioOpt.isPresent()) {
+	        return usuarioOpt.get();
+	    }
 
-		// 2. Consultar API externa
-		RestTemplate restTemplate = new RestTemplate();
-		Usuarios[] resultado = restTemplate.getForObject(API_URL + cedula, Usuarios[].class);
+	    // 2. Consultar API externa
+	    RestTemplate restTemplate = new RestTemplate();
+	    Usuarios resultado = restTemplate.getForObject(API_URL + cedula, Usuarios.class);
 
-		if (resultado != null && resultado.length > 0) {
-			Usuarios apiDto = resultado[0];
+	    if (resultado != null) {
+	        Usuarios apiDto = resultado;
 
-			Usuarios nuevoUsuario = new Usuarios();
-			nuevoUsuario.setCedula(apiDto.getCedula());
-			nuevoUsuario.setPrimerNombre(apiDto.getPrimerNombre());
-			nuevoUsuario.setSegundoNombre(apiDto.getSegundoNombre());
-			nuevoUsuario.setPrimerApellido(apiDto.getPrimerApellido());
-			nuevoUsuario.setSegundoApellido(apiDto.getSegundoApellido());
-			nuevoUsuario.setCorreo(apiDto.getCorreo() != null ? apiDto.getCorreo() : "");
-			nuevoUsuario.setCelular(apiDto.getCelular());
+	        Usuarios nuevoUsuario = new Usuarios();
+	        nuevoUsuario.setCedula(apiDto.getCedula());
+	        nuevoUsuario.setPrimerNombre(apiDto.getPrimerNombre());
+	        nuevoUsuario.setSegundoNombre(apiDto.getSegundoNombre());
+	        nuevoUsuario.setPrimerApellido(apiDto.getPrimerApellido());
+	        nuevoUsuario.setSegundoApellido(apiDto.getSegundoApellido());
+	        nuevoUsuario.setCorreo(apiDto.getCorreo() != null ? apiDto.getCorreo() : "");
+	        nuevoUsuario.setCelular(apiDto.getCelular());
 
-			Rol rolDocente = rolDao.findByNombre(NombreRol.DOCENTE)
-					.orElseThrow(() -> new RuntimeException("Rol DOCENTE no existe"));
+	        Rol rolDocente = rolDao.findByNombre(NombreRol.DOCENTE)
+	                .orElseThrow(() -> new RuntimeException("Rol DOCENTE no existe"));
 
-			UsuarioRol usuarioRol = new UsuarioRol();
-			usuarioRol.setUsuario(null);
-			usuarioRol.setRol(rolDocente);
+	        UsuarioRol usuarioRol = new UsuarioRol();
+	        usuarioRol.setUsuario(nuevoUsuario); // Asegúrate de asociar el usuario
+	        usuarioRol.setRol(rolDocente);
 
-			nuevoUsuario.getRoles().add(usuarioRol);
+	        nuevoUsuario.getRoles().add(usuarioRol);
 
-			return usuarioDao.save(nuevoUsuario);
-		} else {
-			throw new RuntimeException("Usuario no encontrado en API externa");
-		}
+	        return usuarioDao.save(nuevoUsuario);
+	    } else {
+	        throw new RuntimeException("Usuario no encontrado en API externa");
+	    }
 	}
 
 	@Override
