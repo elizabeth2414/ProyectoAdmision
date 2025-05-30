@@ -55,10 +55,10 @@ public class ApiFenixServiceImpl implements IApiFenixService {
 
 	    // 2. Consultar API externa
 	    RestTemplate restTemplate = new RestTemplate();
-	    Usuarios resultado = restTemplate.getForObject(API_URL + cedula, Usuarios.class);
+	    Usuarios[] resultado = restTemplate.getForObject(API_URL + cedula, Usuarios[].class);
 
-	    if (resultado != null) {
-	        Usuarios apiDto = resultado;
+	    if (resultado != null && resultado.length > 0) {
+	        Usuarios apiDto = resultado[0];
 
 	        Usuarios nuevoUsuario = new Usuarios();
 	        nuevoUsuario.setCedula(apiDto.getCedula());
@@ -73,7 +73,7 @@ public class ApiFenixServiceImpl implements IApiFenixService {
 	                .orElseThrow(() -> new RuntimeException("Rol DOCENTE no existe"));
 
 	        UsuarioRol usuarioRol = new UsuarioRol();
-	        usuarioRol.setUsuario(nuevoUsuario); // Asegúrate de asociar el usuario
+	        usuarioRol.setUsuario(nuevoUsuario);
 	        usuarioRol.setRol(rolDocente);
 
 	        nuevoUsuario.getRoles().add(usuarioRol);

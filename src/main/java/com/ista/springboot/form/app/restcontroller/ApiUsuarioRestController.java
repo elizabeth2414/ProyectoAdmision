@@ -1,6 +1,5 @@
 package com.ista.springboot.form.app.restcontroller;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -20,25 +19,23 @@ import com.ista.springboot.form.app.services.IApiFenixService;
 @RequestMapping("/api/login")
 public class ApiUsuarioRestController {
 
-	 @Autowired
-	    private IApiFenixService apiService;
+	@Autowired
+	private IApiFenixService apiService;
 
-	 
-	 @GetMapping("/cedula/{cedula}")
-	 public ResponseEntity<?> buscarPorCedula(@PathVariable String cedula) {
-	     Usuarios usuario = apiService.buscarPorCedula(cedula);
-	     if (usuario == null) {
-	         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-	                 .body(Map.of("error", "Usuario no encontrado con la cédula " + cedula));
-	     }
-	     return ResponseEntity.ok(usuario);
-	 }
-	 
-	 @GetMapping("/buscarUsuario")
-	    public List<Usuarios> buscar(@RequestParam String filtro) {
-	        return apiService.buscarPorNombreOApellido(filtro);
-	    }
+	@GetMapping("/cedula/{cedula}")
+	public ResponseEntity<?> buscarPorCedula(@PathVariable String cedula) {
+		try {
+			Usuarios usuario = apiService.obtenerORegistrarUsuarioPorCedula(cedula); // ✔️
+			return ResponseEntity.ok(usuario);
+		} catch (RuntimeException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(Map.of("error", "Usuario no encontrado con la cédula " + cedula));
+		}
+	}
 
-	 
+	@GetMapping("/buscarUsuario")
+	public List<Usuarios> buscar(@RequestParam String filtro) {
+		return apiService.buscarPorNombreOApellido(filtro);
+	}
 
 }
