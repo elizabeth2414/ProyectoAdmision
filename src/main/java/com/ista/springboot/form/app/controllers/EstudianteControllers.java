@@ -27,8 +27,16 @@ public class EstudianteControllers {
     @Autowired
     private IInstitucionService institucionService;
 
-    @GetMapping("/listarEstudiantes")
+    @GetMapping("/listarEstudiantesDocentes")
     public String listarUsuarios(Model model) {
+        List<Estudiantes> estudiantes = estudianteService.findAll();
+        model.addAttribute("titulo", "Lista de Estudiantes");
+        model.addAttribute("estudiantes", estudiantes);
+        return "listarEstudiantesDocentes";
+    }
+    
+    @GetMapping("/listarEstudiantes")
+    public String listarUsuariosDocente(Model model) {
         List<Estudiantes> estudiantes = estudianteService.findAll();
         model.addAttribute("titulo", "Lista de Estudiantes");
         model.addAttribute("estudiantes", estudiantes);
