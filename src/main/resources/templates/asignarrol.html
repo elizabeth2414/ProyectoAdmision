@@ -235,15 +235,6 @@
             align-items: center;
             gap: 0.5rem;
         }
-            display: none;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -425,7 +416,7 @@
                                 const li = document.createElement('li');
                                 li.innerHTML = `
                                     <i class='bx bx-user me-2'></i>
-                                    <span>${usuario.primernombre} ${usuario.primerapellido}</span>
+                                    <span>${usuario.primerNombre} ${usuario.primerApellido}</span>
                                 `;
                                 li.className = 'list-group-item list-group-item-action';
                                 li.addEventListener('click', () => selectUser(usuario, li.textContent.trim()));

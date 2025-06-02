@@ -42,6 +42,14 @@ public class EstudianteControllers {
         model.addAttribute("titulo", "Registrar Usuario");
         return "registrarEstudiantes";
     }
+    
+    @GetMapping("/registrarEstudiantesAdministrador")
+    public String crearUsuarioAdmin(Model model) {
+        model.addAttribute("estudiante", new Estudiantes());
+        model.addAttribute("instituciones", institucionService.findAll());
+        model.addAttribute("titulo", "Registrar Usuario");
+        return "registrarEstudiantesAdministrador";
+    }
 
     @PostMapping("/guardarEstudiante")
     public String guardarUsuario(
