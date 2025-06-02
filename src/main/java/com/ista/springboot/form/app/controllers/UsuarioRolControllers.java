@@ -33,12 +33,12 @@ public class UsuarioRolControllers {
     @Autowired
     private IRolService rolService;
 
-    @GetMapping("/listarUsuarioRoles")
+    @GetMapping("/listarRolUsuario")
     public String listarUsuarioRoles(Model model) {
         List<UsuarioRol> usuarioRoles = usuarioRolService.findAll();
         model.addAttribute("titulo", "Lista de Roles por Usuario");
         model.addAttribute("usuarioRoles", usuarioRoles);
-        return "listarUsuarioRoles";
+        return "listarRolUsuario";
     }
 
     @GetMapping("/usuarioRol")
@@ -72,7 +72,7 @@ public class UsuarioRolControllers {
         try {
             usuarioRolService.save(usuarioRol);
             flash.addFlashAttribute("success", "Rol asignado correctamente");
-            return "redirect:/listarUsuarioRoles";
+            return "redirect:/listarRolUsuario";
         } catch (Exception e) {
             model.addAttribute("error", "Error al asignar el rol: " + e.getMessage());
             model.addAttribute("titulo", "Asignar Rol a Usuario");
@@ -87,7 +87,7 @@ public class UsuarioRolControllers {
         UsuarioRol usuarioRol = usuarioRolService.findById(id);
         if (usuarioRol == null) {
             flash.addFlashAttribute("error", "Asignación de rol no encontrada");
-            return "redirect:/listarUsuarioRoles";
+            return "redirect:/listarRolUsuario";
         }
         model.addAttribute("usuarioRol", usuarioRol);
         model.addAttribute("titulo", "Editar Asignación de Rol");
@@ -104,6 +104,6 @@ public class UsuarioRolControllers {
         } catch (Exception e) {
             flash.addFlashAttribute("error", "Error al eliminar la asignación: " + e.getMessage());
         }
-        return "redirect:/listarUsuarioRoles";
+        return "redirect:/listarRolUsuario";
     }
 }

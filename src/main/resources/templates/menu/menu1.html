@@ -28,7 +28,7 @@
                 <form id="loginForm" class="login-form" onsubmit="login(event)">
                     <div class="input-group">
                         <i class="fas fa-id-card icon"></i>
-                        <input type="text" id="cedula" name="cedula" placeholder="Ingrese su cédula" required minlength="10" maxlength="10" />
+						<input type="text" id="cedula" name="cedula" placeholder="Ingrese su cédula o clave secreta" required maxlength="50" />
                     </div>
 
                     <button type="submit">Iniciar Sesión</button>
@@ -65,43 +65,56 @@
             }
         }
 
-        async function login(event) {
-            event.preventDefault();
+		async function login(event) {
+		    event.preventDefault();
 
-            const cedula = document.getElementById('cedula').value.trim();
-            const mensajeDiv = document.getElementById('mensaje');
-            mensajeDiv.style.color = 'red';
-            mensajeDiv.textContent = '';
+		    const entrada = document.getElementById('cedula').value.trim();
+		    const mensajeDiv = document.getElementById('mensaje');
+		    mensajeDiv.style.color = 'red';
+		    mensajeDiv.textContent = '';
 
-            if (cedula.length !== 10) {
-                mensajeDiv.textContent = 'Por favor, ingrese una cédula válida de 10 dígitos.';
-                return;
-            }
+		    const CLAVE_SECRETA = "252525"; // Tu clave secreta aquí
 
-            try {
-                const response = await fetch(`/api/login/cedula/${cedula}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                    },
-                });
+		    // Si son solo números y exactamente 10 caracteres: cédula válida
+		    const esCedula = /^\d{10}$/.test(entrada);
 
-                if (!response.ok) {
-                    throw new Error(`Error: ${response.status} - Usuario no encontrado.`);
-                }
+		    // Si no es cédula y tiene al menos 6 caracteres (clave secreta)
+		    const esClaveSecreta = entrada.length >= 6 && entrada === CLAVE_SECRETA;
 
-                const usuario = await response.json();
+		    if (esClaveSecreta) {
+		        window.location.href = "/menu/layout";
+		        return;
+		    }
 
-                mensajeDiv.style.color = 'green';
-                mensajeDiv.textContent = `¡Bienvenido, ${usuario.primer_nombre} ${usuario.segundo_nombre}!`;
+		    if (esCedula) {
+		        try {
+		            const response = await fetch(`/api/login/cedula/${entrada}`, {
+		                method: 'GET',
+		                headers: {
+		                    'Content-Type': 'application/json',
+		                    'Accept': 'application/json',
+		                },
+		            });
 
+		            if (!response.ok) {
+		                throw new Error(`Error: ${response.status} - Usuario no encontrado.`);
+		            }
 
-				window.location.href = "/menu/layout2";
-            } catch (error) {
-                mensajeDiv.textContent = error.message;
-            }
-        }
+		            const usuario = await response.json();
+
+		            mensajeDiv.style.color = 'green';
+		            mensajeDiv.textContent = `¡Bienvenido, ${usuario.primer_nombre} ${usuario.segundo_nombre}!`;
+
+		            window.location.href = "/menu/layout2";
+
+		        } catch (error) {
+		            mensajeDiv.textContent = error.message;
+		        }
+		    } else {
+		        mensajeDiv.textContent = "Ingrese una cédula válida (10 dígitos) o una clave secreta (mínimo 6 caracteres).";
+		    }
+		}
+
     </script>
 </body>
 

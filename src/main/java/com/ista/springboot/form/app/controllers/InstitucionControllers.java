@@ -39,12 +39,12 @@ public class InstitucionControllers {
 	}
 
 
-	@GetMapping("/listarinstituciones")
+	@GetMapping("/listarinstitucionesAdmin")
 	public String listarInstituciones(Model model) {
 		List<Institucion> instituciones = institucionService.findAll();
 		model.addAttribute("titulo", "Lista de Instituciones");
 		model.addAttribute("instituciones", instituciones);
-		return "listarinstituciones";
+		return "listarinstitucionesAdmin";
 	}
 
 	@GetMapping("/institucion")
@@ -66,7 +66,7 @@ public class InstitucionControllers {
 		try {
 			institucionService.save(institucion);
 			flash.addFlashAttribute("success", "Institución guardada correctamente");
-			return "redirect:/listarInstituciones";
+			return "redirect:/listarinstitucionesAdmin";
 		} catch (Exception e) {
 			model.addAttribute("error", "Error al guardar la institución: " + e.getMessage());
 			model.addAttribute("titulo", "Registrar Institución");
@@ -79,7 +79,7 @@ public class InstitucionControllers {
 		Institucion institucion = institucionService.findById(id);
 		if (institucion == null) {
 			flash.addFlashAttribute("error", "Institución no encontrada");
-			return "redirect:/listarInstituciones";
+			return "redirect:/listarinstitucionesAdmin";
 		}
 		model.addAttribute("institucion", institucion);
 		model.addAttribute("titulo", "Editar Institución");
@@ -94,6 +94,6 @@ public class InstitucionControllers {
 		} catch (Exception e) {
 			flash.addFlashAttribute("error", "Error al eliminar la institución: " + e.getMessage());
 		}
-		return "redirect:/listarInstituciones";
+		return "redirect:/listarinstitucionesAdmin";
 	}
 }
