@@ -1,65 +1,193 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/layout.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menú Offcanvas con Logo</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Material Symbols Rounded -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
 </head>
 <body>
-    <div th:fragment="menu">
-		
-        <!-- Sidebar -->
-		<div class="side-navbar active-nav d-flex justify-content-between flex-wrap flex-column" id="sidebar">
-            <ul class="nav flex-column text-white w-100">
-                <a href="#" class="nav-link h3 text-white my-2 text-center">
-                    <img src="/imagenes/LOGO.png" alt="Logo" width="160" height="60">
-                    <br>Menú Principal
 
-                </a>
+<div th:fragment="menu">
 
-                <!-- Registro Estudiantes -->
-                <li class="nav-item">
-                    <a class="nav-link text-white" data-bs-toggle="collapse" href="#registroSubmenu" role="button" aria-expanded="false" aria-controls="registroSubmenu">
-                        <i class="bx bx-buildings"></i> <span class="mx-2">Admision Tec Azuay</span>
-                    </a>
-                    <div class="collapse" id="registroSubmenu">
-                        <ul class="list-unstyled ps-4">
-                            <li><a href="/registrarEstudiantes" class="nav-link text-white">Admision Tec Azuay</a></li>
-                            <li><a href="/listarEstudiantesDocentes" class="nav-link text-white">Listar Estudiantes Admision</a></li>
-                        </ul>
-                    </div>
-                </li>
+  <style>
+    .offcanvas,
+    .navbar {
+      background-color: #ffffff !important;
+      color: #000000;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
 
-                <!-- Salir -->
-                <li class="nav-item">
-                    <a href="/menu/menu1" class="nav-link text-white">
-                        <i class="bx bx-log-out"></i> <span class="mx-2">Salir</span>
-                    </a>
-                </li>
-            </ul>
+    .navbar-toggler {
+      border-color: #000000;
+      padding: 4px 6px;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
 
-            <!-- Social -->
-            <div class="text-center pb-3">
-                <a href="#"><i class="bx bxl-instagram-alt text-white me-2"></i></a>
-                <a href="#"><i class="bx bxl-twitter text-white me-2"></i></a>
-                <a href="#"><i class="bx bxl-facebook text-white"></i></a>
-            </div>
-			
-        </div>
+    .btn-white-bg {
+      background-color: #ffffff !important;
+      border: 1px solid #0d6efd !important;
+      color: #0d6efd !important;
+    }
+
+    .btn-white-bg:hover {
+      background-color: #e9f2ff !important;
+      color: #0a58ca !important;
+    }
+
+    .navbar .nav-link,
+    .offcanvas .nav-link {
+      color: #000000;
+      font-weight: 600;
+      transition: color 0.3s ease, background-color 0.3s ease;
+      border-radius: 5px;
+      padding: 6px 10px;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .navbar .nav-link:hover,
+    .offcanvas .nav-link:hover,
+    .offcanvas .nav-link:focus {
+      color: #004F9F;
+      background-color: #e0ecff;
+      box-shadow: 0 0 6px rgba(0, 79, 159, 0.3);
+      text-decoration: none;
+    }
+
+    .material-symbols-rounded {
+      font-variation-settings:
+        'FILL' 0,
+        'wght' 600,
+        'GRAD' 0,
+        'opsz' 24;
+      font-size: 1.3rem;
+    }
+
+    .offcanvas .btn-close {
+      filter: none;
+    }
+
+    .offcanvas-start {
+      width: 260px !important;
+    }
+
+    .offcanvas-body {
+      overflow-y: auto;
+      max-height: calc(100vh - 60px);
+      padding-left: 8px;
+      padding-right: 8px;
+    }
+
+    .offcanvas-body::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .offcanvas-body::-webkit-scrollbar-thumb {
+      background-color: #cccccc;
+      border-radius: 4px;
+    }
+
+    .offcanvas-body::-webkit-scrollbar-track {
+      background: #ffffff;
+    }
+
+    .offcanvas .collapse ul li a.nav-link {
+      padding-left: 28px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: block;
+    }
+
+    .offcanvas-header img {
+      height: 40px;
+      object-fit: contain;
+    }
+  </style>
+
+  <!-- Botón para abrir menú offcanvas con fondo blanco -->
+  <button class="btn btn-outline-primary btn-white-bg m-3" type="button"
+          data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar" aria-label="Abrir menú">
+    <span class="material-symbols-rounded">menu</span>
+  </button>
+
+  <!-- Menú Offcanvas -->
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+    <div class="offcanvas-header">
+      <img th:src="@{/imagenes/LOGO.png}" alt="Logo" />
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
     </div>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-		<script>
-			document.addEventListener("DOMContentLoaded", function () {
-				const menuBtn = document.querySelector("#menu-btn");
-				const sidebar = document.querySelector("#sidebar");
-				const container = document.querySelector(".my-container");
+    <div class="offcanvas-body">
+      <ul class="navbar-nav flex-column">
 
-				menuBtn.addEventListener("click", () => {
-					sidebar.classList.toggle("active-nav");
-					container.classList.toggle("active-cont");
-				});
-			});
-		</script>
+        <li class="nav-item">
+          <a class="nav-link" data-bs-toggle="collapse" href="#registroSubmenu" role="button" aria-expanded="false" aria-controls="registroSubmenu">
+            <span class="material-symbols-rounded">school</span> Admision Tec Azuay
+          </a>
+          <div class="collapse" id="registroSubmenu">
+            <ul class="list-unstyled">
+              <li><a href="/registrarEstudiantes" class="nav-link"><span class="material-symbols-rounded">person_add</span> Admision Tec Azuay</a></li>
+              <li><a href="/listarEstudiantesDocentes" class="nav-link"><span class="material-symbols-rounded">list_alt</span> Listar Estudiantes Admision</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a href="/menu/menu1" class="nav-link">
+            <span class="material-symbols-rounded">logout</span> Salir
+          </a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Script para mantener submenús abiertos al cerrar/abrir -->
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+	  const offcanvas = document.getElementById("offcanvasNavbar");
+	  const collapseElements = document.querySelectorAll(".collapse");
+
+	  // No restaurar al cargar, solo cuando abres el menú
+	  offcanvas.addEventListener("show.bs.offcanvas", () => {
+	    collapseElements.forEach(collapse => {
+	      const id = collapse.id;
+	      const state = localStorage.getItem("collapse-" + id);
+	      if (state === "show") {
+	        collapse.classList.add("show");
+	      } else {
+	        collapse.classList.remove("show");
+	      }
+	    });
+	  });
+
+	  // Guardar estado al abrir o cerrar submenu
+	  collapseElements.forEach(collapse => {
+	    collapse.addEventListener("shown.bs.collapse", () => {
+	      localStorage.setItem("collapse-" + collapse.id, "show");
+	    });
+	    collapse.addEventListener("hidden.bs.collapse", () => {
+	      localStorage.setItem("collapse-" + collapse.id, "hidden");
+	    });
+	  });
+	});
+</script>
+
 </body>
 </html>
