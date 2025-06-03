@@ -1,6 +1,7 @@
 package com.ista.springboot.form.app.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ista.springboot.form.app.dao.IRolDao;
 import com.ista.springboot.form.app.entity.Rol;
+import com.ista.springboot.form.app.entity.Rol.NombreRol;
 
 @Service
 public class RolServiceImpl implements IRolService{
@@ -44,9 +46,17 @@ public class RolServiceImpl implements IRolService{
 	}
 
 	@Override
-	public Rol buscarPorNombre(String nombre) {
+	public Rol buscarPorNombre(NombreRol nombre) {
 		// TODO Auto-generated method stub
-		return rolDao.findByNombre(nombre);
+		Optional<Rol> optional = rolDao.findByNombre(nombre);
+        return optional.orElse(null);
+	}
+
+	@Override
+	public Rol buscarPorNombreYClave(NombreRol nombre, String claveSecreta) {
+		// TODO Auto-generated method stub
+		Optional<Rol> optional = rolDao.findByNombreAndClaveSecreta(nombre, claveSecreta);
+        return optional.orElse(null);
 	}
 
 	

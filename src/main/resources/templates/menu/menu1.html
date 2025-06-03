@@ -28,7 +28,7 @@
                 <form id="loginForm" class="login-form" onsubmit="login(event)">
                     <div class="input-group">
                         <i class="fas fa-id-card icon"></i>
-						<input type="text" id="cedula" name="cedula" placeholder="Ingrese su cédula o clave secreta" required maxlength="50" />
+						<input type="text" id="cedula" name="cedula" placeholder="Ingrese su cédula o clave secreta" required maxlength="10" />
                     </div>
 
                     <button type="submit">Iniciar Sesión</button>
@@ -103,7 +103,7 @@
 		            const usuario = await response.json();
 
 		            mensajeDiv.style.color = 'green';
-		            mensajeDiv.textContent = `¡Bienvenido, ${usuario.primer_nombre} ${usuario.segundo_nombre}!`;
+		            mensajeDiv.textContent = `¡Bienvenido, ${usuario.primer_nombre} ${usuario.primer_apellido}!`;
 
 		            window.location.href = "/menu/layout2";
 

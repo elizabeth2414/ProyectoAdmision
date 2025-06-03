@@ -1,88 +1,460 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Usuarios Registrados</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/layout.css">
-  <style>
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-    th, td {
-      border: 1px solid #000;
-      padding: 8px;
-      text-align: left;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Usuarios Registrados</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/layout.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .main-container {
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        .content-wrapper {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2rem;
+        }
+
+        .page-header {
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .page-title {
+            color: #2c3e50;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            flex: 1;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: 0 0 0 1px #dee2e6;
+            margin-bottom: 2rem;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 0;
+        }
+
+        th {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            color: white;
+            font-weight: 600;
+            padding: 1rem 0.8rem;
+            text-align: left;
+            border: none;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        th:first-child {
+            border-top-left-radius: 8px;
+        }
+
+        th:last-child {
+            border-top-right-radius: 8px;
+        }
+
+        td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: middle;
+            font-size: 0.9rem;
+        }
+
+        tr:hover {
+            background-color: #f8f9fa;
+            transition: background-color 0.2s ease;
+        }
+
+        tr:last-child td:first-child {
+            border-bottom-left-radius: 8px;
+        }
+
+        tr:last-child td:last-child {
+            border-bottom-right-radius: 8px;
+        }
+
+        .empty-value {
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .loading-container {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4a90e2;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #adb5bd;
+        }
+
+        .error-state {
+            text-align: center;
+            padding: 3rem;
+            color: #dc3545;
+        }
+
+        .error-state i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-retry {
+            background: linear-gradient(135deg, #4a90e2, #357abd);
+            border: none;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-retry:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+        }
+
+        .search-container {
+            margin-bottom: 2rem;
+        }
+
+        .search-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 0.8rem 1rem;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #4a90e2;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+        }
+
+        .user-row {
+            transition: all 0.2s ease;
+        }
+
+        .user-row.hidden {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .main-container {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .stats-container {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                padding: 1rem;
+            }
+            
+            .page-header {
+                text-align: center;
+            }
+            
+            .page-title {
+                font-size: 1.3rem;
+                justify-content: center;
+                margin-bottom: 1rem;
+            }
+            
+            th, td {
+                padding: 0.5rem 0.3rem;
+                font-size: 0.8rem;
+            }
+
+            .table-container {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 </head>
 <body>
-	
-	<!-- Menú lateral -->
-	<div th:replace="menu/layout :: menu"></div>
 
-	<!-- Contenido principal -->
-	<div class="my-container" style="margin-left: 250px;">
-		<div class="form-container">
-		        <h2 th:text="${titulo}" class="mb-4 text-center"></h2>
-  <h2>Lista de Usuarios Registrados</h2>
-  <table id="tablaUsuarios">
-    <thead>
-      <tr>
-        <th>Cédula</th>
-        <th>Primer Nombre</th>
-        <th>Segundo Nombre</th>
-        <th>Primer Apellido</th>
-        <th>Segundo Apellido</th>
-        <th>Correo</th>
-        <th>Dirección</th>
-        <th>Celular</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Aquí se llenan los usuarios -->
-    </tbody>
-  </table>
-      </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="/js/sidebar.js"></script>
+<!-- Menú lateral -->
+<div th:replace="menu/layout :: menu"></div>
 
-  <script>
-    function mostrarValor(valor) {
-      // Si es null o vacío, devuelve "—"
-      return (valor === null || valor === "") ? "—" : valor;
+<!-- Contenido principal -->
+<div class="main-container">
+    <div class="content-wrapper">
+        <!-- Header de la página -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class='bx bx-users'></i>
+                Usuarios Registrados
+            </h1>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number" id="totalUsuarios">0</div>
+                <div class="stat-label">Total de Usuarios</div>
+            </div>
+        </div>
+
+        <!-- Buscador -->
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Buscar por nombre, apellido, cédula o correo...">
+        </div>
+
+        <!-- Estado de carga -->
+        <div class="loading-container" id="loadingState">
+            <div class="loading-spinner"></div>
+            <p>Cargando usuarios...</p>
+        </div>
+
+        <!-- Estado de error -->
+        <div class="error-state" id="errorState" style="display: none;">
+            <i class='bx bx-error-circle'></i>
+            <h3>Error al cargar los datos</h3>
+            <p>No se pudieron obtener los usuarios. Por favor, intenta nuevamente.</p>
+            <button class="btn-retry" onclick="cargarUsuarios()">
+                <i class='bx bx-refresh'></i> Reintentar
+            </button>
+        </div>
+
+        <!-- Estado vacío -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <i class='bx bx-user-x'></i>
+            <h3>No hay usuarios registrados</h3>
+            <p>Aún no se han registrado usuarios en el sistema.</p>
+        </div>
+
+        <!-- Tabla de usuarios -->
+        <div class="table-container" id="tableContainer" style="display: none;">
+            <table id="tablaUsuarios">
+                <thead>
+                    <tr>
+                        <th><i class='bx bx-id-card'></i> Cédula</th>
+                        <th><i class='bx bx-user'></i> Primer Nombre</th>
+                        <th><i class='bx bx-user'></i> Segundo Nombre</th>
+                        <th><i class='bx bx-user'></i> Primer Apellido</th>
+                        <th><i class='bx bx-user'></i> Segundo Apellido</th>
+                        <th><i class='bx bx-envelope'></i> Correo</th>
+                        <th><i class='bx bx-home'></i> Dirección</th>
+                        <th><i class='bx bx-phone'></i> Celular</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aquí se llenan los usuarios -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/sidebar.js"></script>
+
+<script>
+function mostrarValor(valor) {
+    if (valor === null || valor === "" || valor === undefined) {
+        return '<span class="empty-value">—</span>';
     }
+    return valor;
+}
 
-    window.onload = function () {
-      fetch('http://localhost:3749/api/login/todos') // Cambia puerto si es diferente
-        .then(response => response.json())
+function mostrarEstado(estado) {
+    const loadingState = document.getElementById('loadingState');
+    const errorState = document.getElementById('errorState');
+    const emptyState = document.getElementById('emptyState');
+    const tableContainer = document.getElementById('tableContainer');
+    
+    // Ocultar todos los estados
+    loadingState.style.display = 'none';
+    errorState.style.display = 'none';
+    emptyState.style.display = 'none';
+    tableContainer.style.display = 'none';
+    
+    // Mostrar el estado correspondiente
+    if (estado === 'loading') {
+        loadingState.style.display = 'block';
+    } else if (estado === 'error') {
+        errorState.style.display = 'block';
+    } else if (estado === 'empty') {
+        emptyState.style.display = 'block';
+    } else if (estado === 'success') {
+        tableContainer.style.display = 'block';
+    }
+}
+
+function actualizarContador(total) {
+    document.getElementById('totalUsuarios').textContent = total;
+}
+
+function filtrarUsuarios() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const rows = document.querySelectorAll('#tablaUsuarios tbody tr');
+    let visibleCount = 0;
+    
+    rows.forEach(row => {
+        const text = row.textContent.toLowerCase();
+        if (text.includes(searchTerm)) {
+            row.classList.remove('hidden');
+            visibleCount++;
+        } else {
+            row.classList.add('hidden');
+        }
+    });
+    
+    // Actualizar contador con resultados filtrados
+    if (searchTerm) {
+        actualizarContador(visibleCount);
+    } else {
+        actualizarContador(rows.length);
+    }
+}
+
+function cargarUsuarios() {
+    mostrarEstado('loading');
+    
+    fetch('http://localhost:8081/api/login/todos')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
-          const tbody = document.querySelector('#tablaUsuarios tbody');
-          data.forEach(usuario => {
-            const fila = document.createElement('tr');
-            fila.innerHTML = `
-              <td>${mostrarValor(usuario.cedula)}</td>
-			  <td>${mostrarValor(usuario.primerNombre)}</td>
-			  <td>${mostrarValor(usuario.segundoNombre)}</td>
-			  <td>${mostrarValor(usuario.primerApellido)}</td>
-			  <td>${mostrarValor(usuario.segundoApellido)}</td>
-			  <td>${mostrarValor(usuario.correo)}</td>
-              <td>${mostrarValor(usuario.direccion)}</td>
-              <td>${mostrarValor(usuario.celular)}</td>
-            `;
-            tbody.appendChild(fila);
-          });
+            const tbody = document.querySelector('#tablaUsuarios tbody');
+            tbody.innerHTML = ''; // Limpiar tabla
+            
+            if (data.length === 0) {
+                mostrarEstado('empty');
+                actualizarContador(0);
+                return;
+            }
+            
+            data.forEach(usuario => {
+                const fila = document.createElement('tr');
+                fila.className = 'user-row';
+                fila.innerHTML = `
+                    <td>${mostrarValor(usuario.cedula)}</td>
+					<td>${mostrarValor(usuario.primer_nombre)}</td>
+					<td>${mostrarValor(usuario.segundo_nombre)}</td>
+					<td>${mostrarValor(usuario.primer_apellido)}</td>
+					<td>${mostrarValor(usuario.segundo_apellido)}</td>
+                    <td>${mostrarValor(usuario.correo)}</td>
+                    <td>${mostrarValor(usuario.direccion)}</td>
+                    <td>${mostrarValor(usuario.celular)}</td>
+                `;
+                tbody.appendChild(fila);
+            });
+            
+            mostrarEstado('success');
+            actualizarContador(data.length);
         })
         .catch(error => {
-          console.error('Error al obtener los usuarios:', error);
+            console.error('Error al obtener los usuarios:', error);
+            mostrarEstado('error');
+            actualizarContador(0);
         });
-    };
-  </script>
+}
+
+// Event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Cargar usuarios al inicio
+    cargarUsuarios();
+    
+    // Configurar buscador
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', filtrarUsuarios);
+    
+    // Configurar tecla Enter para buscar
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            filtrarUsuarios();
+        }
+    });
+});
+
+// Cargar usuarios cuando se carga la ventana (compatibilidad)
+window.onload = function() {
+    if (document.readyState !== 'loading') {
+        cargarUsuarios();
+    }
+};
+</script>
 </body>
 </html>

@@ -9,7 +9,7 @@ import com.ista.springboot.form.app.entity.Rol.NombreRol;
 
 public interface IRolDao extends CrudRepository <Rol, Long>{
 
-	 Optional<Rol> findByNombre(NombreRol nombre);
-	 
-	 Rol findByNombre(String nombre);
+	Optional<Rol> findByNombre(NombreRol nombre);
+	Optional<Rol> findByNombreAndClaveSecreta(NombreRol nombre, String claveSecreta);
+
 }

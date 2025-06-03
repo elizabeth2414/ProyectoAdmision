@@ -21,6 +21,11 @@ public class ApiUsuarioRestController {
 
 	@Autowired
 	private IApiFenixService apiService;
+	
+	@GetMapping("/todos")
+    public List<Usuarios> listarTodos() {
+        return apiService.findAll();
+    }
 
 	@GetMapping("/cedula/{cedula}")
 	public ResponseEntity<?> buscarPorCedula(@PathVariable String cedula) {

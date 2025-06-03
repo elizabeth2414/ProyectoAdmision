@@ -21,7 +21,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient( #fff 0%, #fff 100%);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
@@ -291,7 +291,7 @@
         <div class="form-card">
             <h2 class="page-title" th:text="${titulo}">
                 <i class='bx bx-user-plus'></i>
-                Formulario de Estudiante
+               Admision Estudiante
             </h2>
 
             <!-- Mensajes flash -->
@@ -370,7 +370,7 @@
                         <div class="col-lg-6">
                             <label for="apoyaproceso" class="form-label">
                                 <i class='bx bx-check-shield'></i>
-                                ¿Apoya el Proceso?
+                                ¿Apoya en el Proceso?
                             </label>
 							<select th:field="*{apoyaproceso}">
 							    <option th:value="true">Sí</option>
@@ -391,7 +391,7 @@
 
                 <!-- Botones de acción -->
                 <div class="form-actions">
-                    <a th:href="@{/listarEstudiantes}" class="btn btn-secondary">
+                    <a th:href="@{/listarEstudiantesDocentes}" class="btn btn-secondary">
                         <i class='bx bx-x me-2'></i>
                         Cancelar
                     </a>

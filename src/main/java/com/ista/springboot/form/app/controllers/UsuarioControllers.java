@@ -26,10 +26,19 @@ public class UsuarioControllers {
 
     @Autowired
     private IRolService rolService;
+    
+    @GetMapping("/bienvenida")
+    public String mostrarInicio(Model model) {
+        model.addAttribute("nombre", "Carlos");
+        model.addAttribute("apellido", "Mendoza");
+        return "bienvenida"; // archivo inicio.html en templates
+    }
+
 
     @GetMapping("/listarUsuarios")
     public String listarUsuarios(Model model) {
         List<Usuarios> usuarios = usuarioService.findAll();
+        System.out.println("Usuarios encontrados: " + usuarios.size()); 
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("titulo", "Lista de Usuarios");
         return "listarUsuarios";

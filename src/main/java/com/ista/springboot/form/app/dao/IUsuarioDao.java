@@ -13,6 +13,4 @@ public interface IUsuarioDao extends CrudRepository <Usuarios, Long>{
 	
 	List<Usuarios> findByPrimerNombreContainingIgnoreCaseOrPrimerApellidoContainingIgnoreCase(String nombre, String apellido);
 
-
-
 }

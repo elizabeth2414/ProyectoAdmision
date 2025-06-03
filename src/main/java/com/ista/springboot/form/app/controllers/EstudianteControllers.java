@@ -47,7 +47,7 @@ public class EstudianteControllers {
     public String crearUsuario(Model model) {
         model.addAttribute("estudiante", new Estudiantes());
         model.addAttribute("instituciones", institucionService.findAll());
-        model.addAttribute("titulo", "Registrar Usuario");
+        model.addAttribute("titulo", "Admision Tec-Azuay");
         return "registrarEstudiantes";
     }
     
@@ -55,7 +55,7 @@ public class EstudianteControllers {
     public String crearUsuarioAdmin(Model model) {
         model.addAttribute("estudiante", new Estudiantes());
         model.addAttribute("instituciones", institucionService.findAll());
-        model.addAttribute("titulo", "Registrar Usuario");
+        model.addAttribute("titulo", "Admision Tec-Azuay");
         return "registrarEstudiantesAdministrador";
     }
 

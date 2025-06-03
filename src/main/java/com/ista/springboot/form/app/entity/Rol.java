@@ -22,6 +22,8 @@ public class Rol implements Serializable{
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, unique = true)
 	private NombreRol nombre;
+
+	private String claveSecreta;
 	
 	public enum NombreRol{
 		SUPER_ADMIN,
@@ -54,6 +56,17 @@ public class Rol implements Serializable{
 	public void setNombre(NombreRol nombre) {
 		this.nombre = nombre;
 	}
+	
+
+	public String getClaveSecreta() {
+		return claveSecreta;
+	}
+
+
+	public void setClaveSecreta(String claveSecreta) {
+		this.claveSecreta = claveSecreta;
+	}
+
 
 	/**
 	 * 

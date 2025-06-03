@@ -19,7 +19,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient( #fff 0%, #fff 100%);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
@@ -416,7 +416,7 @@
                                 const li = document.createElement('li');
                                 li.innerHTML = `
                                     <i class='bx bx-user me-2'></i>
-                                    <span>${usuario.primerNombre} ${usuario.primerApellido}</span>
+                                    <span>${usuario.primer_nombre} ${usuario.primer_apellido}</span>
                                 `;
                                 li.className = 'list-group-item list-group-item-action';
                                 li.addEventListener('click', () => selectUser(usuario, li.textContent.trim()));
@@ -441,8 +441,8 @@
             document.getElementById('busquedaUsuario').value = displayText;
             document.getElementById('formRol').classList.remove('d-none');
             document.getElementById('emptyState').style.display = 'none';
-            document.getElementById('listaUsuarios').innerHTML = '';
-            document.getElementById('listaUsuarios').style.display = 'none';
+            document.getElementById('listarUsuarios').innerHTML = '';
+            document.getElementById('listarUsuarios').style.display = 'none';
         }
 
         // Enviar formulario
