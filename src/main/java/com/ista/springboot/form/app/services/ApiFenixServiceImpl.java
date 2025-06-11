@@ -111,4 +111,15 @@ public class ApiFenixServiceImpl implements IApiFenixService {
 		// TODO Auto-generated method stub
 		usuarioDao.deleteById(id);
 	}
+
+	@Override
+	public List<Usuarios> obtenerAdministradores() {
+		// TODO Auto-generated method stub
+		return usuarioDao.findAllByRolesNombre(Rol.NombreRol.ADMINISTRADOR);
+	}
+	
+	@Override
+	public List<Usuarios> buscarUsuariosSinRol(String filtro) {
+        return usuarioDao.buscarUsuariosSinRolConFiltro(filtro);
+    }
 }

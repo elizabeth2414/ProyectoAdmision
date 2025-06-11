@@ -23,7 +23,7 @@
     }
 
     .navbar-toggler {
-      border-color: #000000;
+      border-color: #0a1f44;
       padding: 4px 6px;
       font-size: 1.2rem;
       cursor: pointer;
@@ -42,7 +42,7 @@
 
     .navbar .nav-link,
     .offcanvas .nav-link {
-      color: #000000;
+      color: #0a1f44;
       font-weight: 600;
       transition: color 0.3s ease, background-color 0.3s ease;
       border-radius: 5px;
@@ -123,7 +123,9 @@
   </button>
 
   <!-- Menú Offcanvas -->
-  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+       aria-labelledby="offcanvasNavbarLabel" data-bs-backdrop="false" data-bs-scroll="true">
+
     <div class="offcanvas-header">
       <img th:src="@{/imagenes/LOGO.png}" alt="Logo" />
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>

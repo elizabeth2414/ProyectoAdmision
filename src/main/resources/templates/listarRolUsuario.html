@@ -1,455 +1,274 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Administradores</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet">
-	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
-    <link rel="stylesheet" href="/css/layout.css">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+		    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css" rel="stylesheet">
+			<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
+		    <link rel="stylesheet" href="/css/layout.css">
     <style>
-        :root {
-            --primary-color: #4f46e5;
-            --secondary-color: #f8fafc;
-            --accent-color: #06b6d4;
-            --text-color: #1e293b;
-            --border-color: #e2e8f0;
-            --danger-color: #ef4444;
-            --success-color: #10b981;
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        .admin-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            margin-bottom: 12px;
         }
-
-        body {
-            background: linear-gradient( #fff 0%, #fff 100%);
-            min-height: 100vh;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        
+        .admin-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-
-        .main-content {
-            margin-left: 0;
-            padding: 2rem 1rem;
-            min-height: 100vh;
-        }
-
-        .content-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 2.5rem;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            transition: all 0.3s ease;
-        }
-
-        .page-title {
-            color: var(--text-color);
-            font-weight: 700;
-            font-size: 1.75rem;
-            margin-bottom: 2rem;
-            text-align: center;
-            position: relative;
+        
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #007bff, #28a745);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.75rem;
-        }
-
-        .page-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-            border-radius: 2px;
-        }
-
-        .header-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .search-box {
-            position: relative;
-            max-width: 400px;
-            flex: 1;
-        }
-
-        .search-input {
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 0.75rem 3rem 0.75rem 1rem;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.9);
-            width: 100%;
-        }
-
-        .search-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.25);
-            background: white;
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #6b7280;
-        }
-
-        .refresh-btn {
-            background: linear-gradient(135deg, var(--success-color), #34d399);
-            border: none;
-            border-radius: 12px;
-            padding: 0.75rem 1.5rem;
             color: white;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            font-weight: bold;
+            font-size: 16px;
         }
-
-        .refresh-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.4);
-        }
-
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .admin-card {
-            background: rgba(248, 250, 252, 0.8);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .admin-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
-        }
-
-        .admin-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow);
-            background: rgba(255, 255, 255, 0.9);
-        }
-
+        
         .admin-info {
-            margin-bottom: 1rem;
+            flex: 1;
+            margin-left: 12px;
         }
-
+        
         .admin-name {
-            font-size: 1.1rem;
             font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            color: #333;
+            margin: 0;
         }
-
+        
         .admin-role {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-            color: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
+            color: #6c757d;
+            font-size: 0.9em;
+            margin: 0;
         }
-
-        .admin-actions {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 1rem;
-        }
-
+        
         .btn-remove {
-            background: linear-gradient(135deg, var(--danger-color), #f87171);
-            border: none;
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            color: white;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+            transition: all 0.2s ease;
         }
-
+        
         .btn-remove:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+            transform: scale(1.05);
         }
-
+        
         .empty-state {
             text-align: center;
-            padding: 3rem 1rem;
-            color: #6b7280;
+            padding: 60px 20px;
+            color: #6c757d;
         }
-
-        .empty-icon {
+        
+        .empty-state i {
             font-size: 4rem;
+            margin-bottom: 20px;
             opacity: 0.3;
-            margin-bottom: 1rem;
         }
-
-        .loading-spinner {
-            display: none;
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 2rem auto;
+        
+        .search-container {
+            position: relative;
         }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
         }
-
-        .alert-message {
-            border-radius: 12px;
-            padding: 1rem;
-            font-weight: 500;
-            border: none;
-            animation: slideIn 0.3s ease;
-            margin-bottom: 1.5rem;
+        
+        .search-input {
+            padding-left: 40px;
         }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .admin-count {
-            background: rgba(79, 70, 229, 0.1);
-            color: var(--primary-color);
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 0.9rem;
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
             display: flex;
+            justify-content: center;
             align-items: center;
-            gap: 0.5rem;
+            z-index: 1000;
         }
-
-        /* Modal personalizado */
-        .modal-content {
-            border-radius: 16px;
-            border: none;
-            box-shadow: var(--shadow-lg);
-        }
-
-        .modal-header {
-            border-bottom: 1px solid var(--border-color);
-            border-radius: 16px 16px 0 0;
-            background: linear-gradient(135deg, var(--danger-color), #f87171);
+        
+        .stats-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
         }
-
-        .modal-title {
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
+        
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0;
         }
-
-        .btn-close {
-            filter: invert(1);
+        
+        .stats-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
         }
-
-        /* Responsive design */
+        
         @media (max-width: 768px) {
-            .main-content {
-                padding: 1rem;
+            .admin-card {
+                padding: 12px;
             }
-
-            .content-card {
-                padding: 1.5rem;
-                margin: 1rem;
-                border-radius: 16px;
+            
+            .admin-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 14px;
             }
-
-            .page-title {
-                font-size: 1.5rem;
-                flex-direction: column;
-                gap: 0.5rem;
+            
+            .admin-info {
+                margin-left: 10px;
             }
-
+            
+            .btn-remove {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+            
+            .stats-number {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 10px;
+            }
+            
             .header-controls {
                 flex-direction: column;
-                align-items: stretch;
+                gap: 10px;
             }
-
-            .search-box {
-                max-width: none;
-            }
-
-            .admin-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-
-            .admin-card {
-                padding: 1.25rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .admin-name {
-                font-size: 1rem;
-            }
-
-            .btn-remove {
+            
+            .btn-update {
                 width: 100%;
-                justify-content: center;
-            }
-        }
-
-        /* Sidebar responsive adjustment */
-        @media (min-width: 992px) {
-            .main-content {
-                margin-left: 250px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Menú lateral -->
-    <div th:replace="menu/layout :: menu"></div>
+	<!-- Menú lateral -->
+	    <div th:replace="menu/layout :: menu"></div>
 
-    <!-- Contenido principal -->
-    <div class="main-content">
-        <div class="content-card">
-            <h1 class="page-title">
-                <i class='bx bx-shield-check'></i>
-                Lista de Administradores
-            </h1>
-
-            <!-- Controles del header -->
-            <div class="header-controls">
-                <div class="search-box">
-                    <input type="text" 
-                           id="searchInput" 
-                           class="search-input" 
-                           placeholder="Buscar administrador...">
-                    <i class='bx bx-search search-icon'></i>
+	    <!-- Contenido principal -->
+	    <div class="main-content">
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="mb-0">
+                        <i class="fas fa-users-cog me-2"></i>
+                        Lista de Administradores
+                    </h2>
                 </div>
                 
-                <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-                    <div class="admin-count" id="adminCount">
-                        <i class='bx bx-user-check'></i>
-                        <span>0 Administradores</span>
+                <!-- Estadísticas -->
+                <div class="stats-card">
+                    <div class="row">
+                        <div class="col-6">
+                            <p class="stats-number" id="adminCount">0</p>
+                            <p class="stats-label">Administradores Activos</p>
+                        </div>
+                        <div class="col-6 text-end">
+                            <i class="fas fa-shield-alt" style="font-size: 3rem; opacity: 0.3;"></i>
+                        </div>
                     </div>
-                    <button class="refresh-btn" onclick="loadAdministrators()">
-                        <i class='bx bx-refresh'></i>
-                        Actualizar
-                    </button>
+                </div>
+
+                <!-- Controles -->
+                <div class="row header-controls mb-3">
+                    <div class="col-md-8 col-12 mb-2 mb-md-0">
+                        <div class="search-container">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" id="searchInput" class="form-control search-input" placeholder="Buscar administrador por nombre...">
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-12">
+                        <button class="btn btn-primary btn-update w-100" onclick="loadAdministrators()">
+                            <i class="fas fa-sync-alt me-2"></i>Actualizar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Mensajes -->
+                <div id="mensaje" class="alert-message" style="display: none;"></div>
+
+                <!-- Lista de administradores -->
+                <div id="adminGrid" class="mt-3"></div>
+                
+                <!-- Estado vacío -->
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <i class="fas fa-users-slash"></i>
+                    <h3>No hay administradores registrados</h3>
+                    <p>Aún no se han asignado roles de administrador a ningún usuario.</p>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Mensaje de resultado -->
-            <div id="mensaje" class="alert-message" style="display: none;"></div>
-
-            <!-- Loading spinner -->
-            <div class="loading-spinner" id="loadingSpinner"></div>
-
-            <!-- Grid de administradores -->
-            <div class="admin-grid" id="adminGrid"></div>
-
-            <!-- Estado vacío -->
-            <div class="empty-state" id="emptyState" style="display: none;">
-                <i class='bx bx-user-x empty-icon'></i>
-                <h3>No hay administradores registrados</h3>
-                <p>Aún no se han asignado roles de administrador a ningún usuario.</p>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="text-center">
+            <div class="spinner-border spinner-border-lg text-primary" role="status">
+                <span class="visually-hidden">Cargando...</span>
             </div>
+            <p class="mt-3 text-muted">Cargando administradores...</p>
         </div>
     </div>
 
     <!-- Modal de confirmación -->
-    <div class="modal fade" id="confirmModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">
-                        <i class='bx bx-error-circle'></i>
-                        Confirmar Eliminación
+                    <h5 class="modal-title" id="confirmModalLabel">
+                        <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                        Confirmar eliminación
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="mb-1">¿Estás seguro de que deseas eliminar el rol de administrador de:</p>
-                    <strong id="userToRemove" class="text-primary"></strong>
-                    <p class="mt-2 mb-0 text-muted small">Esta acción no se puede deshacer.</p>
+                    <p>¿Estás seguro de que deseas eliminar el rol de administrador de <strong id="adminToRemove"></strong>?</p>
+                    <p class="text-muted small">Esta acción no se puede deshacer.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-danger" id="confirmRemove">
-                        <i class='bx bx-trash me-1'></i>
-                        Eliminar Rol
+                    <button type="button" class="btn btn-danger" onclick="confirmRemoveAdmin()">
+                        <i class="fas fa-trash me-2"></i>Eliminar rol
                     </button>
                 </div>
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let administrators = [];
         let filteredAdministrators = [];
-        let userToRemoveId = null;
+        let adminToRemoveId = null;
 
-        // Cargar administradores al iniciar la página
-        document.addEventListener('DOMContentLoaded', function() {
-            loadAdministrators();
-        });
+        document.addEventListener('DOMContentLoaded', loadAdministrators);
 
-        // Función para cargar administradores
         function loadAdministrators() {
-            const spinner = document.getElementById('loadingSpinner');
+            const overlay = document.getElementById('loadingOverlay');
             const grid = document.getElementById('adminGrid');
             const emptyState = document.getElementById('emptyState');
-            
-            spinner.style.display = 'block';
+
+            overlay.style.display = 'flex';
             grid.innerHTML = '';
             emptyState.style.display = 'none';
 
@@ -462,136 +281,161 @@
                     administrators = data;
                     filteredAdministrators = [...administrators];
                     renderAdministrators();
-                    updateCount();
+                    updateStats();
                 })
                 .catch(err => {
                     console.error('Error:', err);
-                    showMessage('Error al cargar la lista de administradores', 'danger');
+                    showMessage('Error al cargar la lista de administradores. Por favor, inténtalo nuevamente.', 'danger');
                 })
                 .finally(() => {
-                    spinner.style.display = 'none';
+                    overlay.style.display = 'none';
                 });
         }
 
-        // Renderizar administradores
         function renderAdministrators() {
             const grid = document.getElementById('adminGrid');
             const emptyState = document.getElementById('emptyState');
 
             if (filteredAdministrators.length === 0) {
                 grid.innerHTML = '';
-                emptyState.style.display = 'block';
+                if (administrators.length === 0) {
+                    emptyState.style.display = 'block';
+                } else {
+                    grid.innerHTML = `
+                        <div class="alert alert-info text-center">
+                            <i class="fas fa-search me-2"></i>
+                            No se encontraron administradores que coincidan con la búsqueda.
+                        </div>
+                    `;
+                }
                 return;
             }
 
             emptyState.style.display = 'none';
-            grid.innerHTML = filteredAdministrators.map(admin => `
-                <div class="admin-card" data-admin-id="${admin.id}">
-                    <div class="admin-info">
-                        <div class="admin-name">
-                            <i class='bx bx-user'></i>
-                            ${admin.primernombre} ${admin.primerapellido}
+            grid.innerHTML = filteredAdministrators.map(admin => {
+                const initials = getInitials(admin.primer_nombre, admin.primer_apellido);
+                const fullName = `${admin.primer_nombre} ${admin.primer_apellido}`;
+                
+                return `
+                    <div class="admin-card p-3 d-flex align-items-center">
+                        <div class="admin-avatar">
+                            ${initials}
                         </div>
-                        <div class="admin-role">
-                            <i class='bx bx-shield-check'></i>
-                            ADMINISTRADOR
+                        <div class="admin-info">
+                            <p class="admin-name">${fullName}</p>
+                            <p class="admin-role">
+                                <i class="fas fa-shield-alt me-1"></i>
+                                Administrador del Sistema
+                            </p>
+                        </div>
+                        <div class="admin-actions">
+                            <button class="btn btn-outline-danger btn-sm btn-remove" onclick="showRemoveModal(${admin.id}, '${fullName}')">
+                                <i class="fas fa-trash me-1"></i>
+                                <span class="d-none d-sm-inline">Eliminar Rol</span>
+                            </button>
                         </div>
                     </div>
-                    <div class="admin-actions">
-                        <button class="btn-remove" onclick="showRemoveModal(${admin.id}, '${admin.primernombre} ${admin.primerapellido}')">
-                            <i class='bx bx-trash'></i>
-                            Eliminar Rol
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        // Búsqueda en tiempo real
+        function getInitials(firstName, lastName) {
+            const first = firstName ? firstName.charAt(0).toUpperCase() : '';
+            const last = lastName ? lastName.charAt(0).toUpperCase() : '';
+            return first + last || 'A';
+        }
+
+        function updateStats() {
+            document.getElementById('adminCount').textContent = administrators.length;
+        }
+
+        function showRemoveModal(adminId, adminName) {
+            adminToRemoveId = adminId;
+            document.getElementById('adminToRemove').textContent = adminName;
+            
+            const modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+            modal.show();
+        }
+
+        function confirmRemoveAdmin() {
+            if (!adminToRemoveId) return;
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
+            modal.hide();
+
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = 'flex';
+
+            fetch(`/api/rolusuario/administradores/${adminToRemoveId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Error al eliminar administrador');
+                return res.json();
+            })
+            .then(data => {
+                showMessage('Rol de administrador eliminado exitosamente', 'success');
+                // Actualizar la lista local
+                administrators = administrators.filter(admin => admin.id !== adminToRemoveId);
+                filteredAdministrators = filteredAdministrators.filter(admin => admin.id !== adminToRemoveId);
+                renderAdministrators();
+                updateStats();
+            })
+            .catch(err => {
+                console.error('Error:', err);
+                showMessage('Error al eliminar el rol de administrador. Por favor, inténtalo nuevamente.', 'danger');
+            })
+            .finally(() => {
+                overlay.style.display = 'none';
+                adminToRemoveId = null;
+            });
+        }
+
+        // Búsqueda mejorada
         document.getElementById('searchInput').addEventListener('input', function() {
             const searchTerm = this.value.toLowerCase().trim();
             
             if (searchTerm === '') {
                 filteredAdministrators = [...administrators];
             } else {
-                filteredAdministrators = administrators.filter(admin => 
-                    `${admin.primernombre} ${admin.primerapellido}`.toLowerCase().includes(searchTerm)
-                );
+                filteredAdministrators = administrators.filter(admin => {
+                    const fullName = `${admin.primer_nombre} ${admin.primer_apellido}`.toLowerCase();
+                    return fullName.includes(searchTerm);
+                });
             }
             
             renderAdministrators();
-            updateCount();
         });
 
-        // Mostrar modal de confirmación
-        function showRemoveModal(userId, userName) {
-            userToRemoveId = userId;
-            document.getElementById('userToRemove').textContent = userName;
-            new bootstrap.Modal(document.getElementById('confirmModal')).show();
-        }
-
-        // Confirmar eliminación
-        document.getElementById('confirmRemove').addEventListener('click', function() {
-            if (!userToRemoveId) return;
-
-            const btn = this;
-            const originalText = btn.innerHTML;
-            
-            btn.disabled = true;
-            btn.innerHTML = '<i class="bx bx-loader-alt bx-spin me-1"></i>Eliminando...';
-
-            fetch(`/api/rolusuario/eliminar/${userToRemoveId}`, {
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' }
-            })
-            .then(res => {
-                if (!res.ok) throw new Error('Error al eliminar el rol');
-                return res.text();
-            })
-            .then(msg => {
-                showMessage(msg, 'success');
-                bootstrap.Modal.getInstance(document.getElementById('confirmModal')).hide();
-                loadAdministrators(); // Recargar la lista
-            })
-            .catch(err => {
-                console.error('Error:', err);
-                showMessage('Error al eliminar el rol. Inténtalo de nuevo.', 'danger');
-            })
-            .finally(() => {
-                btn.disabled = false;
-                btn.innerHTML = originalText;
-                userToRemoveId = null;
-            });
-        });
-
-        // Actualizar contador
-        function updateCount() {
-            const count = filteredAdministrators.length;
-            const countElement = document.getElementById('adminCount');
-            countElement.innerHTML = `
-                <i class='bx bx-user-check'></i>
-                <span>${count} Administrador${count !== 1 ? 'es' : ''}</span>
-            `;
-        }
-
-        // Mostrar mensajes
         function showMessage(text, type) {
             const mensaje = document.getElementById('mensaje');
-            mensaje.className = `alert alert-${type} alert-message`;
+            mensaje.className = `alert alert-${type} alert-dismissible fade show`;
             mensaje.innerHTML = `
-                <i class='bx ${type === 'success' ? 'bx-check-circle' : 'bx-error-circle'} me-2'></i>
+                <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'danger' ? 'fa-exclamation-circle' : 'fa-info-circle'} me-2"></i>
                 ${text}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             `;
             mensaje.style.display = 'block';
             
+            // Auto-hide después de 5 segundos
             setTimeout(() => {
-                mensaje.style.display = 'none';
+                if (mensaje.style.display !== 'none') {
+                    const alert = bootstrap.Alert.getOrCreateInstance(mensaje);
+                    alert.close();
+                }
             }, 5000);
         }
 
-        // Limpiar modal al cerrarlo
-        document.getElementById('confirmModal').addEventListener('hidden.bs.modal', function() {
-            userToRemoveId = null;
+        // Manejar errores de red globalmente
+        window.addEventListener('online', function() {
+            showMessage('Conexión restaurada', 'success');
+        });
+
+        window.addEventListener('offline', function() {
+            showMessage('Sin conexión a internet', 'warning');
         });
     </script>
 </body>

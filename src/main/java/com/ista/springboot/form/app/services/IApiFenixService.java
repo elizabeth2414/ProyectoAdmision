@@ -21,4 +21,8 @@ public interface IApiFenixService {
 	Usuarios findById(Long id);
 
 	void delete(Long id);
+	
+	List<Usuarios> buscarUsuariosSinRol(String filtro);
+	
+	List<Usuarios> obtenerAdministradores();
 }

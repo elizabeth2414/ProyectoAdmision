@@ -292,7 +292,7 @@
         <div class="form-card">
             <h2 class="page-title" th:text="${titulo}">
                 <i class='bx bx-user-plus'></i>
-                Admision Estudiante
+               Admision Estudiante
             </h2>
 
             <!-- Mensajes flash -->
@@ -368,10 +368,22 @@
                         Información Académica
                     </h3>
                     <div class="row g-3">
+					
+						            <label for="institucion" class="form-label">
+						                <i class='bx bx-building-house'></i>
+						                Institución
+						            </label>
+						            <select th:field="*{institucion}" class="form-select" id="institucion" required>
+						                <option th:each="inst : ${instituciones}" 
+						                        th:value="${inst.id_institucion}" 
+						                        th:text="${inst.nombre_institucion}">
+						                </option>
+						            </select>
+						        
                         <div class="col-lg-6">
                             <label for="apoyaproceso" class="form-label">
                                 <i class='bx bx-check-shield'></i>
-                                ¿Apoya el Proceso?
+                                ¿Apoya en el Proceso?
                             </label>
 							<select th:field="*{apoyaproceso}">
 							    <option th:value="true">Sí</option>
@@ -407,6 +419,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+		
         // Mejorar la experiencia de usuario
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('studentForm');
@@ -490,5 +503,6 @@
             });
         });
     </script>
+	<script src="/js/sidebar-auto-init.js"></script>
 </body>
 </html>

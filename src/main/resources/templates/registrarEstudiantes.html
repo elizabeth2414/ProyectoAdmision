@@ -368,6 +368,18 @@
                         Información Académica
                     </h3>
                     <div class="row g-3">
+					
+						            <label for="institucion" class="form-label">
+						                <i class='bx bx-building-house'></i>
+						                Institución
+						            </label>
+						            <select th:field="*{institucion}" class="form-select" id="institucion" required>
+						                <option th:each="inst : ${instituciones}" 
+						                        th:value="${inst.id_institucion}" 
+						                        th:text="${inst.nombre_institucion}">
+						                </option>
+						            </select>
+						        
                         <div class="col-lg-6">
                             <label for="apoyaproceso" class="form-label">
                                 <i class='bx bx-check-shield'></i>
