@@ -23,17 +23,17 @@ public class InstitucionControllers {
 	@Autowired
 	private IInstitucionService institucionService;
 
-	@GetMapping({ "/", "/menu/menu1" })
+	@GetMapping({ "/", "/menu/login" })
 	public String index() {
-		return "menu/menu1";
+		return "menu/login";
 	}
 
-	@GetMapping("/menu/layout")
+	@GetMapping("/menu/mmenuadmin")
 	public String mostrarLayout() {
 	    return "menu/layout"; 
 	}
 	
-	@GetMapping("/menu/layout2")
+	@GetMapping("/menu/menudocente")
 	public String mostrarLayout2() {
 	    return "menu/layout2"; 
 	}
